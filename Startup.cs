@@ -30,6 +30,7 @@ namespace Hackathon
             services.Configure<RecaptchaSettings>(Configuration.GetSection("RecaptchaSettings"));
             services.AddTransient<IRecaptchaService, RecaptchaService>();
             services.AddTransient<IAdRepository, AdRepository>();
+            services.AddTransient<IUserRepository, UserRepository>();
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
