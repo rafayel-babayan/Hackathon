@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Hackathon.ViewModels;
 using Microsoft.AspNetCore.Http;
 using System.IO;
+using System.Linq;
+using System.Collections;
 
 namespace Hackathon.Controllers
 {
@@ -24,9 +26,21 @@ namespace Hackathon.Controllers
         }
 
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string orderBy, string searchStr, byte pageSize=10, int pageIndex=1)
         {
-            return View();
+            IQueryable<Ad> source = _adRepository.GetAllAds();
+            if (!string.IsNullOrEmpty(searchStr))
+                source = source.Where(x => x.Content.Contains(searchStr));
+            switch (orderBy)
+            {
+                case "number":
+                    {
+                        source = source.OrderBy(x => x.Number);
+                        break;
+                    }
+            }
+
+            return View(await PaginatedList<Ad>.CreateAsync(source, pageIndex, pageSize));
         }
 
 
@@ -41,7 +55,7 @@ namespace Hackathon.Controllers
         public async Task<IActionResult> Create(AdViewModel ad)
         {
             var recaptcha = await _rcService.Validate(Request);
-            Ad newAd=null;
+            Ad newAd = null;
             using (MemoryStream stream = new MemoryStream())
             {
                 await ad.Image.CopyToAsync(stream);

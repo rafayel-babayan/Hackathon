@@ -1,4 +1,5 @@
 ﻿using Hackathon.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ namespace Hackathon.Data
     public interface IAdRepository
     {
         void SaveAd(Ad ad);
-        IEnumerable<Ad> GetAllAds();
+        IQueryable<Ad> GetAllAds();
         Ad GetAd(Guid id);
         void DeleteAd(Guid id);
         void UpdateAd(Ad ad);
@@ -33,9 +34,9 @@ namespace Hackathon.Data
             return _context.Ads.SingleOrDefault(ad => ad.Id.Equals(id));
         }
 
-        public IEnumerable<Ad> GetAllAds()
+        public IQueryable<Ad> GetAllAds()
         {
-           return _context.Ads.AsEnumerable();
+           return _context.Ads.Include(u=>u.User);
         }
 
         public void SaveAd(Ad ad)

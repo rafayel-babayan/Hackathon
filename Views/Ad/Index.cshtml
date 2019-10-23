@@ -1,6 +1,50 @@
-﻿@model Hackathon.ViewModels.PageViewModel
+﻿@model Hackathon.ViewModels.PaginatedList<Ad>
 @{
 	ViewData["Title"] = "Index";
 }
 
 <h1>Index</h1>
+
+<table class="table table-hover">
+    <thead >
+        <tr>
+            <th>
+                <a asp-action="Index" asp-route-orderBy="">Номер</a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-orderBy="">Создано</a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-orderBy="">Объявление</a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-orderBy="">Рейтинг</a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-orderBy="">Пользователь</a>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var ad in Model)
+        {
+        <tr>
+            <td>
+                @ad.Number
+            </td>
+            <td>
+                @ad.CreationDate
+            </td>
+            <td>
+                @ad.Content
+            </td>
+            <td>
+                @ad.Rating
+            </td>
+            <td>
+                @ad.User.Name
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
