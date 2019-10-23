@@ -47,49 +47,70 @@
         </div>
     </nav>
 </header>
-<table class="table table-hover">
+<table id="mainTable"class="table table-hover">
     <thead>
         <tr>
+            <th></th>
             <th>
-                <a asp-action="Index" asp-route-orderBy="">Номер</a>
+                <a asp-action="Index" asp-route-orderBy="@ViewBag.Num">Номер</a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-orderBy="">Создано</a>
+                <a asp-action="Index" asp-route-orderBy="@ViewBag.Date">Создано</a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-orderBy="">Объявление</a>
+                <a asp-action="Index" asp-route-orderBy="@ViewBag.Cont">Объявление</a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-orderBy="">Рейтинг</a>
+                <a asp-action="Index" asp-route-orderBy="@ViewBag.Rate">Рейтинг</a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-orderBy="">Пользователь</a>
+                <a asp-action="Index" asp-route-orderBy="@ViewBag.Usr">Пользователь</a>
             </th>
         </tr>
     </thead>
     <tbody>
         @foreach (var ad in Model)
         {
-            <tr>
-                <td>
-                    @ad.Number
-                </td>
-                <td>
-                    @ad.CreationDate
-                </td>
-                <td>
-                    @ad.Content
-                </td>
-                <td>
-                    @ad.Rating
-                </td>
-                <td>
-                    @ad.User.Name
-                </td>
-            </tr>
+        <tr>
+            <td class="d-none">
+                @ad.Id
+            </td>
+            <td>
+                <input type="checkbox" />
+            </td>
+            <td>
+                @ad.Number
+            </td>
+            <td>
+                @ad.CreationDate
+            </td>
+            <td>
+                @ad.Content
+            </td>
+            <td>
+                @ad.Rating
+            </td>
+            <td>
+                @ad.User.Name @ad.UserId
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-Id="@ad.Id"><i class="fa fa-edit"></i></a>
+            </td>
+        </tr>
         }
     </tbody>
 </table>
+<div id="DelBtn" class="btn btn-primary">Delete</div>
+@for (int i = 1; i < Model.TotalPages+1; i++)
+{
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageIndex="@i"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]">
+    @i
+</a>
+}
+
 <script type="text/javascript" src="~/lib/jquery/dist/jquery.min.js"></script>
 <script type="text/javascript" src="~/lib/bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="~/lib/bootstrap-4.3.1-dist/Datetimepicker/bootstrap-datetimepicker.js" charset="UTF-8"></script>
@@ -126,4 +147,16 @@
         maxView: 1,
         forceParse: 0
     });
+</script>
+<script>
+    $("#DelBtn").click(function () {
+        var message = "Id Name                  Country\n";
+        $("#mainTable input[type=checkbox]:checked").each(function () {
+            var row = $(this).closest("tr")[0];
+            alert(        row.cells[0].innerHTML);
+                
+        });
+            
+        return false;
+    })
 </script>

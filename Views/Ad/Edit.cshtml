@@ -4,14 +4,13 @@
 @using Hackathon.ViewModels
 @inject IOptions<RecaptchaSettings> RecaptchaSettings
 @{
-	ViewData["Title"] = "Добавить объявление";
+    ViewData["Title"] = "Изменить объявление";
 }
-
 <div class="row m-auto" style="width:50%">
     <div class="col-md-12">
-        <h1 class="title col-12">Добавить объявление</h1>
+        <h1 class="title col-12">Изменить объявление</h1>
 
-        <form method="post" asp-controller="Ad" asp-action="Create" enctype="multipart/form-data">
+        <form method="post" asp-controller="Ad" asp-action="Edit" enctype="multipart/form-data">
             <div class="modal-body">
                 <div asp-validation-summary="All" class="text-danger"></div>
                 <div class="form-group">
@@ -43,18 +42,19 @@
                     <label asp-for="Image" class="control-label"></label>
                     <input asp-for="Image" type="file" class="form-control" />
                     <span asp-validation-for="Image" class="text-danger"></span>
+                    <input hidden asp-for="Id" />
                 </div>
                 <div class="form-group">
                     @Html.Recaptcha(RecaptchaSettings?.Value)
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-primary myBtn">Сохранить изменения</button>
-                <a class="btn btn-secondary" asp-action="Index">Назад</a>
+                <button type="submit" class="btn btn-primary myBtn">Сохранить изминения</button>
+                <a class="btn btn-secondary" asp-action="Index" >Назад</a>
             </div>
         </form>
     </div>
 </div>
 @section Scripts{
-	@{await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }
