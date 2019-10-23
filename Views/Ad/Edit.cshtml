@@ -4,19 +4,13 @@
 @using Hackathon.ViewModels
 @inject IOptions<RecaptchaSettings> RecaptchaSettings
 @{
-    ViewData["Title"] = "Добавить объявление";
+    ViewData["Title"] = "Изменить объявление";
 }
+<div class="row m-auto" style="width:50%">
+    <div class="col-md-12">
+        <h1 class="title col-12">Изменить объявление</h1>
 
-<div class="row m-auto" style="width:80%">
-    <div class="col-3">
-        <div class="imgBlok my-5">
-            @*<div  id="adImg"></div>*@
-            <img src="~/72223826_552498145520200_1610553147623735296_n.png" class="adImg" id="myImg" />
-        </div>
-    </div>
-    <div class="col-md-9 float-right">
-        <h1 class="title">Добавить объявление</h1>
-        <form method="post" asp-controller="Ad" asp-action="Create" enctype="multipart/form-data">
+        <form method="post" asp-controller="Ad" asp-action="Edit" enctype="multipart/form-data">
             <div class="modal-body">
                 <div asp-validation-summary="All" class="text-danger"></div>
                 <div class="form-group">
@@ -48,46 +42,19 @@
                     <label asp-for="Image" class="control-label"></label>
                     <input asp-for="Image" type="file" class="form-control" />
                     <span asp-validation-for="Image" class="text-danger"></span>
+                    <input hidden asp-for="Id" />
                 </div>
                 <div class="form-group">
                     @Html.Recaptcha(RecaptchaSettings?.Value)
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-primary myBtn">Сохранить изменения</button>
-                <a class="btn btn-secondary" asp-action="Index">Назад</a>
+                <button type="submit" class="btn btn-primary myBtn">Сохранить изминения</button>
+                <a class="btn btn-secondary" asp-action="Index" >Назад</a>
             </div>
         </form>
     </div>
 </div>
-<!--The Modal-->
-<div id="myModal" class="modal">
-    <span class="close">&times;</span>
-    <img class="modal-content" id="img01">
-    <div id="caption"></div>
-</div>
-<script>
-    // Get the modal
-    var modal = document.getElementById("myModal");
-
-    // Get the image and insert it inside the modal - use its "alt" text as a caption
-    var img = document.getElementById("myImg");
-    var modalImg = document.getElementById("img01");
-    var captionText = document.getElementById("caption");
-    img.onclick = function () {
-        modal.style.display = "block";
-        modalImg.src = this.src;
-        captionText.innerHTML = this.alt;
-    }
-
-    // Get the <span> element that closes the modal
-    var span = document.getElementsByClassName("close")[0];
-
-    // When the user clicks on <span> (x), close the modal
-    span.onclick = function () {
-        modal.style.display = "none";
-    }
-</script>
 @section Scripts{
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }

@@ -6,6 +6,7 @@ namespace Hackathon.ViewModels
 {
     public class AdViewModel
     {
+        public Guid Id { get; set; }
         [Required]
         public int Number { get; set; }  
         public Guid UserId { get; set; }
@@ -17,5 +18,6 @@ namespace Hackathon.ViewModels
         public IFormFile Image { get; set; }
         [Required]
         public DateTime CreationDate { get; set; }
+        public byte[] OldImage { get; set; }
     }
 }

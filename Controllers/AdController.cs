@@ -26,18 +26,52 @@ namespace Hackathon.Controllers
         }
 
 
-        public async Task<IActionResult> Index(string orderBy, string searchStr, byte pageSize=10, int pageIndex=1)
+        public async Task<IActionResult> Index(string orderBy, string searchStr, byte pageSize = 10, int pageIndex = 1)
         {
             IQueryable<Ad> source = _adRepository.GetAllAds();
+
             if (!string.IsNullOrEmpty(searchStr))
                 source = source.Where(x => x.Content.Contains(searchStr));
+
+            ViewBag.Num = orderBy == "numAsc" ? "numDesc" : "numAsc";
+            ViewBag.Date = orderBy == "dateAsc" ? "dateDesc" : "dateAsc";
+            ViewBag.Cont = orderBy == "contAsc" ? "contDesc" : "contAsc";
+            ViewBag.Rate = orderBy == "rateAsc" ? "rateDesc" : "rateAsc";
+            ViewBag.Usr = orderBy == "usrAsc" ? "usrDesc" : "usrAsc";
+
             switch (orderBy)
             {
-                case "number":
-                    {
-                        source = source.OrderBy(x => x.Number);
-                        break;
-                    }
+                case "numAsc":
+                    source = source.OrderBy(x => x.Number);
+                    break;
+                case "numDesc":
+                    source = source.OrderByDescending(x => x.Number);
+                    break;
+                case "dateAsc":
+                    source = source.OrderBy(x => x.CreationDate);
+                    break;
+                case "dateDesc":
+                    source = source.OrderByDescending(x => x.CreationDate);
+                    break;
+                case "contAsc":
+                    source = source.OrderBy(x => x.Content);
+                    break;
+                case "contDesc":
+                    source = source.OrderByDescending(x => x.Content);
+                    break;
+                case "rateAsc":
+                    source = source.OrderBy(x => x.Rating);
+                    break;
+                case "rateDesc":
+                    source = source.OrderByDescending(x => x.Rating);
+                    break;
+                case "usrAsc":
+                    source = source.OrderBy(x => x.User.Name);
+                    break;
+                case "usrDesc":
+                    source = source.OrderByDescending(x => x.User.Name);
+                    break;
+                default: break;
             }
 
             return View(await PaginatedList<Ad>.CreateAsync(source, pageIndex, pageSize));
@@ -55,6 +89,9 @@ namespace Hackathon.Controllers
         public async Task<IActionResult> Create(AdViewModel ad)
         {
             var recaptcha = await _rcService.Validate(Request);
+            if (!recaptcha.success)
+                ModelState.AddModelError("", "Подтвердите что вы человек.");
+
             Ad newAd = null;
             using (MemoryStream stream = new MemoryStream())
             {
@@ -78,10 +115,10 @@ namespace Hackathon.Controllers
                 }
             }
 
-            if (recaptcha.success && ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 _adRepository.SaveAd(newAd);
-                RedirectToAction(nameof(Create));
+                RedirectToAction(nameof(Index));
             }
             else
             {
@@ -89,7 +126,69 @@ namespace Hackathon.Controllers
                 return View();
             }
 
-            return BadRequest();
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(Guid Id)
+        {
+            ViewBag.Users = new SelectList(_userRepository.GetAllUsers(), "Id", "Name");
+
+            var model = _adRepository.GetAd(Id);
+            var viewModel = new AdViewModel
+            {
+                Id = model.Id,
+                Content = model.Content,
+                CreationDate = model.CreationDate,
+                Number = model.Number,
+                Rating = model.Rating,
+                UserId = model.UserId,
+                OldImage = model.Image
+            };
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(AdViewModel ad)
+        {
+
+            var recaptcha = await _rcService.Validate(Request);
+            if (!recaptcha.success)
+                ModelState.AddModelError("", "Подтвердите что вы человек.");
+
+            var model = _adRepository.GetAd(ad.Id);
+            model.Content = ad.Content;
+            model.CreationDate = ad.CreationDate;
+            model.Number = ad.Number;
+            model.Rating = ad.Rating;
+            model.UserId = ad.UserId;
+
+            if (ad.Image != null)
+            {
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    await ad.Image.CopyToAsync(stream);
+
+                    if (stream.Length < 2097152)
+                    {
+                        model.Image = stream.ToArray();
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("Image", "The file is too large.");
+                    }
+                }
+            }
+
+            if (ModelState.IsValid)
+                _adRepository.UpdateAd(model);
+            else
+            {
+                ViewBag.Users = new SelectList(_userRepository.GetAllUsers(), "Id", "Name");
+                return View();
+            }
+            return RedirectToAction(nameof(Index));
         }
     }
 }
