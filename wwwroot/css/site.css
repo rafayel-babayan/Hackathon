@@ -54,13 +54,18 @@ body {
     height: 60px;
     line-height: 60px; /* Vertically center the text there */
 }
-.pagination {
+.paging {
     position: absolute;
-    height: 80px;
+    height: 70px;
     bottom: 100px;
 }
-.pagination select{
-    height: 50px;
+.paging span{
+    color: #4200be;
+    font-weight: 500;
+    font-size: 20px;
+}
+.paging select{
+    width: fit-content!important;
     font-size: 22px;
     font-weight: 500;
 }
@@ -114,4 +119,34 @@ header {
 }
 label{
     font-weight:500;
+}
+search-btn{
+    background-color: #fff!important;
+}
+
+
+.pagination {
+    display: inline-block;
+    text-align: right!important;
+}
+
+.pagination a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+}
+
+.pagination a.active {
+    background-color: #4200be;
+    color: white;
+    border-radius: 50%;
+}
+
+.pagination a:hover:not(.active) {
+    background-color: #ddd;
+    border-radius: 50%;
+}
+table {
+    overflow-x: auto;
 }
