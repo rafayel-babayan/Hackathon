@@ -4,17 +4,18 @@
 @using Hackathon.ViewModels
 @inject IOptions<RecaptchaSettings> RecaptchaSettings
 @{
-	ViewData["Title"] = "Добавить объявление";
+    ViewData["Title"] = "Добавить объявление";
 }
 
-<div class="row m-auto" style="width:50%">
-    <div class="col-md-12">
-        <div class="d-flex justify-content-start">
-            <div class="adImg mx-3"></div>
-            <h1 class="title">Добавить объявление</h1>
+<div class="row m-auto" style="width:80%">
+    <div class="col-3">
+        <div class="imgBlok my-5">
+            @*<div  id="adImg"></div>*@
+            <img src="~/72223826_552498145520200_1610553147623735296_n.png" class="adImg" id="myImg" />
         </div>
-        
-
+    </div>
+    <div class="col-md-9 float-right">
+        <h1 class="title">Добавить объявление</h1>
         <form method="post" asp-controller="Ad" asp-action="Create" enctype="multipart/form-data">
             <div class="modal-body">
                 @Html.ValidationSummary(true)
@@ -59,6 +60,34 @@
         </form>
     </div>
 </div>
+<!--The Modal-->
+<div id="myModal" class="modal">
+    <span class="close">&times;</span>
+    <img class="modal-content" id="img01">
+    <div id="caption"></div>
+</div>
+<script>
+    // Get the modal
+    var modal = document.getElementById("myModal");
+
+    // Get the image and insert it inside the modal - use its "alt" text as a caption
+    var img = document.getElementById("myImg");
+    var modalImg = document.getElementById("img01");
+    var captionText = document.getElementById("caption");
+    img.onclick = function () {
+        modal.style.display = "block";
+        modalImg.src = this.src;
+        captionText.innerHTML = this.alt;
+    }
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+</script>
 @section Scripts{
-	@{await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }
