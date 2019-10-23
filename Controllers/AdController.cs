@@ -38,21 +38,41 @@ namespace Hackathon.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> Index(string orderBy, string searchStr, byte pageSize = 1, int pageIndex = 1)
+        public async Task<IActionResult> Index(Guid user,
+            DateTime from,
+            DateTime to, 
+            string searchStr,
+            string sortStr,
+            int pageSize = 3,
+            int page = 1)
         {
             ViewBag.Users = new SelectList(_userRepository.GetAllUsers(), "Id", "Name");
+
             IQueryable<Ad> source = _adRepository.GetAllAds();
 
+            //filtering
+            if(user != Guid.Empty)
+            {
+                source = source.Where(x => x.UserId == user);
+            }
+            if (from != DateTime.MinValue && to != DateTime.MinValue)
+            {
+                source = source.Where(x => x.CreationDate > from && x.CreationDate < to);
+            }
             if (!string.IsNullOrEmpty(searchStr))
-                source = source.Where(x => x.Content.Contains(searchStr));
+            {
+                source = source.Where(x => x.Content.Contains(searchStr) 
+                || x.User.Name.Contains(searchStr));
+            }
 
-            ViewBag.Num = orderBy == "numAsc" ? "numDesc" : "numAsc";
-            ViewBag.Date = orderBy == "dateAsc" ? "dateDesc" : "dateAsc";
-            ViewBag.Cont = orderBy == "contAsc" ? "contDesc" : "contAsc";
-            ViewBag.Rate = orderBy == "rateAsc" ? "rateDesc" : "rateAsc";
-            ViewBag.Usr = orderBy == "usrAsc" ? "usrDesc" : "usrAsc";
-            ViewBag.OrderBy = orderBy;
-            switch (orderBy)
+            ViewBag.Num = sortStr == "numAsc" ? "numDesc" : "numAsc";
+            ViewBag.Date = sortStr == "dateAsc" ? "dateDesc" : "dateAsc";
+            ViewBag.Cont = sortStr == "contAsc" ? "contDesc" : "contAsc";
+            ViewBag.Rate = sortStr == "rateAsc" ? "rateDesc" : "rateAsc";
+            ViewBag.Usr = sortStr == "usrAsc" ? "usrDesc" : "usrAsc";
+            ViewBag.OrderBy = sortStr;
+            ViewBag.PageSize= pageSize;
+            switch (sortStr)
             {
                 case "numAsc":
                     source = source.OrderBy(x => x.Number);
@@ -87,9 +107,14 @@ namespace Hackathon.Controllers
                 default: break;
             }
 
-            return View(await PaginatedList<Ad>.CreateAsync(source, pageIndex, pageSize));
+            //model.;
+            var T = new IndexViewModel
+            {
+                Ads = await PaginatedList<Ad>.CreateAsync(source, page, pageSize),
+                FilterViewModel = new FilterViewModel(_userRepository.GetAllUsers().ToList(), user, searchStr, from, to)
+            };
+            return View(T);
         }
-
 
         [HttpGet]
         public IActionResult Create()

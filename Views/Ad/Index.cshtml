@@ -1,4 +1,4 @@
-﻿@model Hackathon.ViewModels.PaginatedList<Ad>
+﻿@model Hackathon.ViewModels.IndexViewModel
 @{
     ViewData["Title"] = "Index";
 }
@@ -8,40 +8,35 @@
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon text-light"></span>
         </button>
-        @* <a class="navbar-brand" href="#">Navbar</a>*@
+       @{ 
+           var from = @Model.FilterViewModel.From == DateTime.MinValue ? "" : @Model.FilterViewModel.From.ToString("yyyy-MM-dd");
+           var to = @Model.FilterViewModel.To == DateTime.MinValue ? "" : @Model.FilterViewModel.To.ToString("yyyy-MM-dd");
+       }
 
         <div class="collapse navbar-collapse  w-80 " id="navbarTogglerDemo03">
-            <form class="navbar-nav mr-auto mt-2 mt-lg-0 d-flex w-100  justify-content-around">
+            <form method="get" class="navbar-nav mr-auto mt-2 mt-lg-0 d-flex w-100  justify-content-around">
                 <div class="input-field" style="background:#4200be">
                     <a asp-controller="Ad" asp-action="Create" class="btn btn-add">Добавить</a>
                 </div>
                 <div class="input-field d-flex">
                     <span class="btn text-light">Пользователь</span>
-                    <select class="form-control" asp-items="@ViewBag.Users"></select>
+                    <select name="user" asp-items="@Model.FilterViewModel.Users as SelectList" class="form-control"></select>
                 </div>
                 <div class="input-field d-flex">
                     <div class="d-flex mx-2">
-                        <label class="control-label">от</label>
-                        <div class="controls input-append date form_date d-flex" data-date="" data-date-format="dd MM yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
-                            <input size="16" type="text" value="" readonly style="width:42px" class="form-control mx-2">
-                            <span class="add-on"><img src="~/calendar.svg" class="icon-th my-1" style="width:28px;height:28px;" /></span>
-                        </div>
-                        <input type="hidden" id="dtp_input2" value="" /><br />
+                        <span class="btn text-light">от</span>
+                        <input name="from" value="@from" class="form-control" type="date" />
                     </div>
                     <div class="d-flex">
-                        <label class="control-label">до</label>
-                        <div class="controls input-append date form_date d-flex" data-date="" data-date-format="dd MM yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
-                            <input size="16" type="text" value="" readonly style="width:42px" class="form-control mx-2">
-                            <span class="add-on"><img src="~/calendar.svg" class="icon-th my-1" style="width:28px;height:28px;" /></span>
-                        </div>
-                        <input type="hidden" id="dtp_input2" value="" /><br />
+                        <span class="btn text-light">до</span>
+                        <input name="to" value="@to" class="form-control" type="date" />
                     </div>
                 </div>
                 <div class="input-field">
-                    <input class="form-control mr-sm-2 search-btn" type="search" placeholder="Общий поиск" aria-label="Search">
+                    <input name="searchStr" value="@Model.FilterViewModel.SearchString" class="form-control mr-sm-2 search-btn" type="search" placeholder="Общий поиск" aria-label="Search">
                 </div>
                 <div class="input-field">
-                    <a class="form-control" asp-action="Index" ><i class="fa fa-search"></i></a>
+                    <button type="submit" class="form-control"><i class="fa fa-search"></i></button>
                 </div>
             </form>
         </div>
@@ -50,26 +45,51 @@
 <table id="mainTable"class="table table-hover w-100">
     <thead>
         <tr>
-           
             <th>
-                <a asp-action="Index" asp-route-orderBy="@ViewBag.Num">Номер</a>
+                <a asp-action="Index" 
+                   asp-route-sortStr="@ViewBag.Num"
+                   asp-route-user="@Model.FilterViewModel.SelectedUser"
+                   asp-route-searchStr="@Model.FilterViewModel.SearchString"
+                   asp-route-from="@Model.FilterViewModel.From"
+                   asp-route-to="@Model.FilterViewModel.To"
+                   >Номер</a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-orderBy="@ViewBag.Date">Создано</a>
+                <a asp-action="Index" 
+                   asp-route-sortStr="@ViewBag.Date"
+                   asp-route-user="@Model.FilterViewModel.SelectedUser"
+                   asp-route-searchStr="@Model.FilterViewModel.SearchString"
+                   asp-route-from="@Model.FilterViewModel.From"
+                   asp-route-to="@Model.FilterViewModel.To">Создано</a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-orderBy="@ViewBag.Cont">Объявление</a>
+                <a asp-action="Index"
+                   asp-route-sortStr="@ViewBag.Cont"
+                   asp-route-user="@Model.FilterViewModel.SelectedUser"
+                   asp-route-searchStr="@Model.FilterViewModel.SearchString"
+                   asp-route-from="@Model.FilterViewModel.From"
+                   asp-route-to="@Model.FilterViewModel.To">Объявление</a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-orderBy="@ViewBag.Rate">Рейтинг</a>
+                <a asp-action="Index" 
+                   asp-route-sortStr="@ViewBag.Rate"
+                   asp-route-user="@Model.FilterViewModel.SelectedUser"
+                   asp-route-searchStr="@Model.FilterViewModel.SearchString"
+                   asp-route-from="@Model.FilterViewModel.From"
+                   asp-route-to="@Model.FilterViewModel.To">Рейтинг</a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-orderBy="@ViewBag.Usr">Пользователь</a>
+                <a asp-action="Index" 
+                   asp-route-sortStr="@ViewBag.Usr"
+                   asp-route-user="@Model.FilterViewModel.SelectedUser"
+                   asp-route-searchStr="@Model.FilterViewModel.SearchString"
+                   asp-route-from="@Model.FilterViewModel.From"
+                   asp-route-to="@Model.FilterViewModel.To">Пользователь</a>
             </th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var ad in Model)
+        @foreach (var ad in Model.Ads)
         {
         <tr>
             <td>
@@ -85,7 +105,7 @@
                 @ad.Rating
             </td>
             <td>
-                @ad.User.Name @ad.UserId
+                @ad.User.Name
             </td>
             <td>
                 <a asp-action="Edit" asp-route-Id="@ad.Id"><i class="fa fa-edit"></i></a>
@@ -99,27 +119,49 @@
 <div class="w-100 row paging mx-2 mt-5">
     <div class="col d-flex">
         <span  class="btn">Количество строк на странице:</span>
-        
-        <a asp-action="Index" class="btn">3</a>
-        <a asp-action="Index" class="btn"> 5</a>
-        <a asp-action="Index" class="btn">10</a>
-        
+        <div class="pages pagination">
+            <a asp-action="Index"
+                    asp-route-sortStr="@ViewBag.OrderBy"
+                    asp-route-user="@Model.FilterViewModel.SelectedUser"
+                    asp-route-searchStr="@Model.FilterViewModel.SearchString"
+                    asp-route-from="@Model.FilterViewModel.From"
+                    asp-route-to="@Model.FilterViewModel.To"
+                    asp-route-page="1"
+                    asp-route-pageSize="3">3</a>
+            <a asp-action="Index" asp-route-sortStr="@ViewBag.OrderBy"
+                    asp-route-user="@Model.FilterViewModel.SelectedUser"
+                    asp-route-searchStr="@Model.FilterViewModel.SearchString"
+                    asp-route-from="@Model.FilterViewModel.From"
+                    asp-route-to="@Model.FilterViewModel.To"
+                    asp-route-page="1"
+                    asp-route-pageSize="5">5</a>
+            <a asp-action="Index" asp-route-sortStr="@ViewBag.OrderBy"
+                    asp-route-user="@Model.FilterViewModel.SelectedUser"
+                    asp-route-searchStr="@Model.FilterViewModel.SearchString"
+                    asp-route-from="@Model.FilterViewModel.From"
+                    asp-route-to="@Model.FilterViewModel.To"
+                    asp-route-pageSize="10"
+                    asp-route-page="1">10</a>
+        </div>
     </div>
     <div class="col pagination">
         <div class="pages float-right">
             <a href="">&laquo;</a>
-            @for (int i = 1; i < Model.TotalPages + 1; i++)
+            @for (int i = 1; i < Model.Ads.TotalPages + 1; i++)
             {
                 var active = string.Empty;
-                if (Model.PageIndex == i)
+                if (Model.Ads.PageIndex == i)
                 {
                     active = "active";
                 }
-
+                
                 <a asp-action="Index"
-                   asp-route-sortOrder="@ViewBag.OrderBy"
-                   asp-route-pageIndex="@i"
-                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                    asp-route-sortStr="@ViewBag.OrderBy"
+                    asp-route-user="@Model.FilterViewModel.SelectedUser"
+                    asp-route-searchStr="@Model.FilterViewModel.SearchString"
+                    asp-route-from="@Model.FilterViewModel.From"
+                    asp-route-to="@Model.FilterViewModel.To"
+                    asp-route-page="@i"
                    class="@active">@i</a>
             }
             <a href="">&raquo;</a>

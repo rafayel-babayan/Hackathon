@@ -5,8 +5,8 @@
 @inject IOptions<RecaptchaSettings> RecaptchaSettings
 @{
     ViewData["Title"] = "Изменить объявление";
-    var img = "data:image/gif;base64," + Convert.ToBase64String(Model.OldImage);
-    var src = img != null ? img : "~/no.png";
+
+    var src = Model.OldImage != null ? "data:image/gif;base64," + Convert.ToBase64String(Model.OldImage) : "/no.png";
 
 }
 <div class="row m-auto" style="width:80%">
