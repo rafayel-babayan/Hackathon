@@ -27,6 +27,7 @@ namespace Hackathon.Data
         public void DeleteAd(Guid id)
         {
             _context.Ads.Remove(GetAd(id));
+            _context.SaveChanges();
         }
 
         public Ad GetAd(Guid id)

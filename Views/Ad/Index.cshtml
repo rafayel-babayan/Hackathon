@@ -41,7 +41,7 @@
                     <input class="form-control mr-sm-2 search-btn" type="search" placeholder="Общий поиск" aria-label="Search">
                 </div>
                 <div class="input-field">
-                    <button class="form-control"><i class="fa fa-search"></i></button>
+                    <a class="form-control" asp-action="Index" ><i class="fa fa-search"></i></a>
                 </div>
             </form>
         </div>
@@ -50,7 +50,7 @@
 <table id="mainTable"class="table table-hover w-100">
     <thead>
         <tr>
-            <th></th>
+           
             <th>
                 <a asp-action="Index" asp-route-orderBy="@ViewBag.Num">Номер</a>
             </th>
@@ -72,12 +72,6 @@
         @foreach (var ad in Model)
         {
         <tr>
-            <td class="d-none">
-                @ad.Id
-            </td>
-            <td>
-                <input type="checkbox" />
-            </td>
             <td>
                 @ad.Number
             </td>
@@ -132,7 +126,7 @@
         </div>
     </div>
 </div>
-<div id="DelBtn" class="btn btn-primary">Delete</div>
+
 
 <script type="text/javascript" src="~/lib/jquery/dist/jquery.min.js"></script>
 <script type="text/javascript" src="~/lib/bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
@@ -172,18 +166,5 @@
     });
 </script>
 <script>
-    $("#DelBtn").click(function () {
-        var message = "Id Name                  Country\n";
-        $("#mainTable input[type=checkbox]:checked").each(function () {
-            var row = $(this).closest("tr")[0];
-            alert(        row.cells[0].innerHTML);
-                
-        });
-            
-        return false;
-    })
-
-    $("#pageSize").change(function () {
-       @ViewBag.pageSize = this.value;
-    })
+    
 </script>

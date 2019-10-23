@@ -28,14 +28,14 @@ namespace Hackathon.Controllers
         [HttpGet]
         public IActionResult Delete(Guid id)
         {
-           return View(_userRepository.GetUser(id));
+           return View(_adRepository.GetAd(id));
         }
 
         [HttpPost]
         public IActionResult Delete(Ad ad)
         {
             _adRepository.DeleteAd(ad.Id);
-            return View();
+            return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> Index(string orderBy, string searchStr, byte pageSize = 10, int pageIndex = 1)

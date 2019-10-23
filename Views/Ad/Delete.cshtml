@@ -2,28 +2,15 @@
 @{
     ViewData["Title"] = "Delete";
 }
-
 <h1>Удалить объявление?</h1>
 <ul class="dl-vertical">
-    <li>
-        <b>@Html.DisplayNameFor(model => model.Number)</b> -
-        @Html.DisplayFor(model => model.Number)
-    </li>
-    <li>
-        <b>@Html.DisplayNameFor(model => model.CreationDate)</b> -
-        @Html.DisplayFor(model => model.CreationDate)
-    </li>
-    <li>
-        <b>@Html.DisplayNameFor(model => model.Rating)</b> -
-        @Html.DisplayFor(model => model.Rating)
-    </li>
-    <li>
-        <b>@Html.DisplayNameFor(model => model.User)</b> -
-        @Html.DisplayFor(model => model.User.Name)
-    </li>
+    <li><b>Дата добавления</b> - @Model.CreationDate </li>
+    <li><b>Содержимое</b> - @Model.Content </li>
+    <li><b>Номер</b> - @Model.Number</li>
+    <li><b>Рейтинг</b>- @Model.Rating</li>
 </ul>
 <form asp-action="Delete">
     <input hidden asp-for="Id" />
-    <input type="submit" class="btn btn-danger" value="Удалить<button type="submit" class="btn btn-primary myBtn">Сохранить изминения</button>"/>
+    <input type="submit" class="btn btn-danger" value="Удалить"/>
     <a asp-action="Index">Отмена</a>
 </form>
