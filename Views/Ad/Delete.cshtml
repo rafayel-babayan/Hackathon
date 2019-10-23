@@ -2,28 +2,29 @@
 @{
     ViewData["Title"] = "Delete";
 }
-
-<h1>Удалить объявление?</h1>
-<ul class="dl-vertical">
-    <li>
-        <b>@Html.DisplayNameFor(model => model.Number)</b> -
-        @Html.DisplayFor(model => model.Number)
-    </li>
-    <li>
-        <b>@Html.DisplayNameFor(model => model.CreationDate)</b> -
-        @Html.DisplayFor(model => model.CreationDate)
-    </li>
-    <li>
-        <b>@Html.DisplayNameFor(model => model.Rating)</b> -
-        @Html.DisplayFor(model => model.Rating)
-    </li>
-    <li>
-        <b>@Html.DisplayNameFor(model => model.User)</b> -
-        @Html.DisplayFor(model => model.User.Name)
-    </li>
-</ul>
-<form asp-action="Delete">
-    <input hidden asp-for="Id" />
-    <input type="submit" class="btn btn-danger" value="Удалить<button type="submit" class="btn btn-primary myBtn">Сохранить изминения</button>"/>
-    <a asp-action="Index">Отмена</a>
-</form>
+    <div class="w-50 m-auto p-5">
+        <h1 class="title p-5">Удалить объявление?</h1>
+        <ul class="dl-vertical">
+            <li class="list-group-item">
+                <b>@Html.DisplayNameFor(model => model.Number)</b> -
+                @Html.DisplayFor(model => model.Number)
+            </li>
+            <li class="list-group-item">
+                <b>@Html.DisplayNameFor(model => model.CreationDate)</b> -
+                @Html.DisplayFor(model => model.CreationDate)
+            </li>
+            <li class="list-group-item">
+                <b>@Html.DisplayNameFor(model => model.Rating)</b> -
+                @Html.DisplayFor(model => model.Rating)
+            </li>
+            <li class="list-group-item">
+                <b>@Html.DisplayNameFor(model => model.User)</b> -
+                @Html.DisplayFor(model => model.User.Name)
+            </li>
+        </ul>
+        <form asp-action="Delete" class="px-5">
+            <input hidden asp-for="Id" />
+            <input type="submit" class="btn btn-danger" value="Удалить"/>
+            <a asp-action="Index">Отмена</a>
+        </form>
+    </div>
