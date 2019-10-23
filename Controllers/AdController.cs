@@ -25,9 +25,22 @@ namespace Hackathon.Controllers
             _userRepository = userRepository;
         }
 
+        [HttpGet]
+        public IActionResult Delete(Guid id)
+        {
+           return View(_userRepository.GetUser(id));
+        }
+
+        [HttpPost]
+        public IActionResult Delete(Ad ad)
+        {
+            _adRepository.DeleteAd(ad.Id);
+            return View();
+        }
 
         public async Task<IActionResult> Index(string orderBy, string searchStr, byte pageSize = 10, int pageIndex = 1)
         {
+            ViewBag.Users = new SelectList(_userRepository.GetAllUsers(), "Id", "Name");
             IQueryable<Ad> source = _adRepository.GetAllAds();
 
             if (!string.IsNullOrEmpty(searchStr))

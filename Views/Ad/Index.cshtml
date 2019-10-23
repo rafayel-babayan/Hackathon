@@ -3,8 +3,6 @@
     ViewData["Title"] = "Index";
 }
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-
 <header class="py-4">
     <nav class="navbar navbar-expand-lg navbar-light w-100">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,11 +17,7 @@
                 </div>
                 <div class="input-field d-flex">
                     <span class="btn text-light">Пользователь</span>
-                    <select class="form-control">
-                        <option class="dropdown-item" href="#">Все</option>
-                        <option class="dropdown-item" href="#">Пользователь 2</option>
-                        <option class="dropdown-item" href="#">Пользователь 3</option>
-                    </select>
+                    <select class="form-control" asp-items="@ViewBag.Users"></select>
                 </div>
                 <div class="input-field d-flex">
                     <div class="d-flex mx-2">
@@ -101,6 +95,7 @@
             </td>
             <td>
                 <a asp-action="Edit" asp-route-Id="@ad.Id"><i class="fa fa-edit"></i></a>
+                <a asp-action="Delete" asp-route-Id="@ad.Id"><i class="fa fa-remove"></i></a>
             </td>
         </tr>
         }
@@ -109,37 +104,35 @@
 
 <div class="w-100 row paging mx-2 mt-5">
     <div class="col d-flex">
-        <span class="btn">Количество строк на странице:</span>
-        <select class="form-control mx-2">
-            <option>10</option>
-            <option>50</option>
-            <option>100</option>
+        <span  class="btn">Количество строк на странице:</span>
+        <select id="pageSize" class="form-control mx-2">
+            <option value="3">3</option>
+            <option value="5">5</option>
+            <option value="10">10</option>
         </select>
     </div>
-    
     <div class="col pagination">
         <div class="pages float-right">
-            <a href="#">&laquo;</a>
-            <a href="#">1</a>
-            <a href="#" class="active">2</a>
-            <a href="#">3</a>
-            <a href="#">4</a>
-            <a href="#">5</a>
-            <a href="#">6</a>
-            <a href="#">&raquo;</a>
+            <a href="">&laquo;</a>
+            @for (int i = 1; i < Model.TotalPages + 1; i++)
+            {
+                var active = string.Empty;
+                if (Model.PageIndex == i)
+                {
+                    active = "active";
+                }
+
+                <a asp-action="Index"
+                   asp-route-sortOrder="@ViewData["CurrentSort"]"
+                   asp-route-pageIndex="@i"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   class="@active">@i</a>
+            }
+            <a href="">&raquo;</a>
         </div>
     </div>
 </div>
 <div id="DelBtn" class="btn btn-primary">Delete</div>
-@for (int i = 1; i < Model.TotalPages+1; i++)
-{
-<a asp-action="Index"
-   asp-route-sortOrder="@ViewData["CurrentSort"]"
-   asp-route-pageIndex="@i"
-   asp-route-currentFilter="@ViewData["CurrentFilter"]">
-    @i
-</a>
-}
 
 <script type="text/javascript" src="~/lib/jquery/dist/jquery.min.js"></script>
 <script type="text/javascript" src="~/lib/bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
@@ -188,5 +181,9 @@
         });
             
         return false;
+    })
+
+    $("#pageSize").change(function () {
+       @ViewBag.pageSize = this.value;
     })
 </script>
