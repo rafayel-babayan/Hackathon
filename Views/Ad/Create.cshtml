@@ -4,12 +4,14 @@
 @using Hackathon.ViewModels
 @inject IOptions<RecaptchaSettings> RecaptchaSettings
 @{
-	ViewData["Title"] = "Добавить обьявление";
+	ViewData["Title"] = "Добавить объявление";
 }
-<h1>Добавить обьявление</h1>
-<div class="row">
-	<div class="col-md-4">
-		<form method="post" asp-controller="Ad" asp-action="Create" enctype="multipart/form-data">
+
+<div class="row m-auto" style="width:50%">
+    <div class="col-md-12">
+        <h1 class="title col-12">Добавить объявление</h1>
+
+        <form method="post" asp-controller="Ad" asp-action="Create" enctype="multipart/form-data">
             <div class="modal-body">
                 @Html.ValidationSummary(true)
                 <div class="form-group">
@@ -46,12 +48,12 @@
                     @Html.Recaptcha(RecaptchaSettings?.Value)
                 </div>
             </div>
-			<div class="modal-footer">
-				<button type="submit" class="btn btn-primary">Save changes</button>
-				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-			</div>
-		</form>
-	</div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary myBtn">Save changes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </form>
+    </div>
 </div>
 @section Scripts{
 	@{await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
