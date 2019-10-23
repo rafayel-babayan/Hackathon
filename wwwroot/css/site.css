@@ -150,3 +150,10 @@ search-btn{
 table {
     overflow-x: auto;
 }
+.adImg{
+    height: 70px;
+    width: 70px;
+    background-image: url(../favicon.ico);
+    background-repeat: no-repeat;
+    background-size: contain;
+}
