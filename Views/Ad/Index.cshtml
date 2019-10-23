@@ -48,13 +48,6 @@
         </div>
     </nav>
 
-    <div class="row w-80 listHeader mt-5">
-        <div class="col">Номер</div>
-        <div class="col">Создано</div>
-        <div class="col">Объявление</div>
-        <div class="col">Рейтинг</div>
-        <div class="col">Пользователь</div>
-    </div>
 
     <script type="text/javascript" src="~/lib/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript" src="~/lib/bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
@@ -94,4 +87,11 @@
         });
     </script>
 </header>
-
+<div class="w-100 pagination mx-2">
+        <span class="h4">Количество строк на странице</span>
+        <select class="form-control  col-1 mx-2">
+            <option>10</option>
+            <option>50</option>
+            <option>100</option>
+        </select>
+</div>
