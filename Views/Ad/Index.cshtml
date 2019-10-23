@@ -99,11 +99,11 @@
 <div class="w-100 row paging mx-2 mt-5">
     <div class="col d-flex">
         <span  class="btn">Количество строк на странице:</span>
-        <select id="pageSize" class="form-control mx-2">
-            <option value="3">3</option>
-            <option value="5">5</option>
-            <option value="10">10</option>
-        </select>
+        
+        <a asp-action="Index" class="btn">3</a>
+        <a asp-action="Index" class="btn"> 5</a>
+        <a asp-action="Index" class="btn">10</a>
+        
     </div>
     <div class="col pagination">
         <div class="pages float-right">
@@ -117,7 +117,7 @@
                 }
 
                 <a asp-action="Index"
-                   asp-route-sortOrder="@ViewData["CurrentSort"]"
+                   asp-route-sortOrder="@ViewBag.OrderBy"
                    asp-route-pageIndex="@i"
                    asp-route-currentFilter="@ViewData["CurrentFilter"]"
                    class="@active">@i</a>

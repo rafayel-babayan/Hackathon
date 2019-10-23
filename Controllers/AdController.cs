@@ -38,7 +38,7 @@ namespace Hackathon.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> Index(string orderBy, string searchStr, byte pageSize = 10, int pageIndex = 1)
+        public async Task<IActionResult> Index(string orderBy, string searchStr, byte pageSize = 1, int pageIndex = 1)
         {
             ViewBag.Users = new SelectList(_userRepository.GetAllUsers(), "Id", "Name");
             IQueryable<Ad> source = _adRepository.GetAllAds();
@@ -51,7 +51,7 @@ namespace Hackathon.Controllers
             ViewBag.Cont = orderBy == "contAsc" ? "contDesc" : "contAsc";
             ViewBag.Rate = orderBy == "rateAsc" ? "rateDesc" : "rateAsc";
             ViewBag.Usr = orderBy == "usrAsc" ? "usrDesc" : "usrAsc";
-
+            ViewBag.OrderBy = orderBy;
             switch (orderBy)
             {
                 case "numAsc":
