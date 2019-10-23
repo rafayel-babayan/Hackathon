@@ -54,3 +54,55 @@ body {
   height: 60px;
   line-height: 60px; /* Vertically center the text there */
 }
+
+
+header {
+    background-color: #4200be;
+    color: #fff !important;
+}
+
+.btn-add {
+    background-color: #fff !important;
+    color: #4200be;
+    border-radius: 30px !important;
+    width: 200px !important;
+}
+
+.search-btn {
+    border-radius: 30px !important;
+    width: 200px !important;
+}
+
+.listHeader {
+    width: 80% !important;
+    margin: 0 auto !important;
+}
+
+.appList {
+    color: #4200be !important;
+    width: 80% !important;
+    margin: 15px auto !important;
+    padding: 16px 0px;
+    box-shadow: 20px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.25);
+    border-radius: 15px;
+    font-weight: 600;
+    font-size: 18px;
+}
+.container {
+    max-width: 100%!important;
+    margin: 0!important;
+    padding: 0!important;
+}
+.title {
+    color: #4200be; 
+}
+.myBtn{
+    background: #4200be!important;
+}
+.form-control{
+    border-color: #4200be!important;
+}
+label{
+    font-weight:500;
+}

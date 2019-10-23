@@ -1,12 +1,54 @@
 ﻿@model Hackathon.ViewModels.PaginatedList<Ad>
 @{
-	ViewData["Title"] = "Index";
+    ViewData["Title"] = "Index";
 }
+<header class="py-4">
+    <nav class="navbar navbar-expand-lg navbar-light w-100">
+        <!--<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" href="#">Navbar</a>-->
 
-<h1>Index</h1>
-
+        <div class="collapse navbar-collapse  w-80 " id="navbarTogglerDemo03">
+            <form class="navbar-nav mr-auto mt-2 mt-lg-0 d-flex w-100  justify-content-around">
+                <div class="input-field" style="background:#4200be">
+                    <a asp-controller="Ad" asp-action="Create" class="btn btn-add">Добавить</a>
+                </div>
+                <div class="input-field d-flex">
+                    <span class="btn text-light">Пользователь</span>
+                    <select class="form-control">
+                        <option class="dropdown-item" href="#">Все</option>
+                        <option class="dropdown-item" href="#">Пользователь 2</option>
+                        <option class="dropdown-item" href="#">Пользователь 3</option>
+                    </select>
+                </div>
+                <div class="input-field d-flex">
+                    <div class="d-flex mx-2">
+                        <label class="control-label">от</label>
+                        <div class="controls input-append date form_date d-flex" data-date="" data-date-format="dd MM yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                            <input size="16" type="text" value="" readonly style="width:42px" class="form-control mx-2">
+                            <span class="add-on"><img src="~/calendar.svg" class="icon-th my-1" style="width:28px;height:28px;" /></span>
+                        </div>
+                        <input type="hidden" id="dtp_input2" value="" /><br />
+                    </div>
+                    <div class="d-flex">
+                        <label class="control-label">до</label>
+                        <div class="controls input-append date form_date d-flex" data-date="" data-date-format="dd MM yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                            <input size="16" type="text" value="" readonly style="width:42px" class="form-control mx-2">
+                            <span class="add-on"><img src="~/calendar.svg" class="icon-th my-1" style="width:28px;height:28px;" /></span>
+                        </div>
+                        <input type="hidden" id="dtp_input2" value="" /><br />
+                    </div>
+                </div>
+                <div class="input-field">
+                    <input class="form-control mr-sm-2 search-btn" type="search" placeholder="Общий поиск" aria-label="Search">
+                </div>
+            </form>
+        </div>
+    </nav>
+</header>
 <table class="table table-hover">
-    <thead >
+    <thead>
         <tr>
             <th>
                 <a asp-action="Index" asp-route-orderBy="">Номер</a>
@@ -26,25 +68,62 @@
         </tr>
     </thead>
     <tbody>
-        @foreach(var ad in Model)
+        @foreach (var ad in Model)
         {
-        <tr>
-            <td>
-                @ad.Number
-            </td>
-            <td>
-                @ad.CreationDate
-            </td>
-            <td>
-                @ad.Content
-            </td>
-            <td>
-                @ad.Rating
-            </td>
-            <td>
-                @ad.User.Name
-            </td>
-        </tr>
+            <tr>
+                <td>
+                    @ad.Number
+                </td>
+                <td>
+                    @ad.CreationDate
+                </td>
+                <td>
+                    @ad.Content
+                </td>
+                <td>
+                    @ad.Rating
+                </td>
+                <td>
+                    @ad.User.Name
+                </td>
+            </tr>
         }
     </tbody>
 </table>
+<script type="text/javascript" src="~/lib/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript" src="~/lib/bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="~/lib/bootstrap-4.3.1-dist/Datetimepicker/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+<script type="text/javascript" src="~/lib/bootstrap-4.3.1-dist/Datetimepicker/locales/bootstrap-datetimepicker.ru.js" charset="UTF-8"></script>
+<script type="text/javascript">
+    $('.form_datetime').datetimepicker({
+        language: 'ru',
+        weekStart: 1,
+        todayBtn: 1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        forceParse: 0,
+        showMeridian: 1
+    });
+    $('.form_date').datetimepicker({
+        language: 'ru',
+        weekStart: 1,
+        todayBtn: 1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    });
+    $('.form_time').datetimepicker({
+        language: 'ru',
+        weekStart: 1,
+        todayBtn: 1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 1,
+        minView: 0,
+        maxView: 1,
+        forceParse: 0
+    });
+</script>
